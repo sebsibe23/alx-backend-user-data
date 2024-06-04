@@ -21,22 +21,19 @@ class Auth:
         Returns:
         - bool: True if the path requires authentication, False otherwise.
         """
-        try:
-            if path is not None and excluded_paths is not None:
-                for exclusion_path in map(lambda x: x.strip(), excluded_paths):
-                    pattern = ""
-                    if exclusion_path[-1] == "*":
-                        pattern = "{}.*".format(exclusion_path[0:-1])
-                    elif exclusion_path[-1] == "/":
-                        pattern = "{}/*".format(exclusion_path[0:-1])
-                    else:
-                        pattern = "{}/*".format(exclusion_path)
-                    if re.match(pattern, path):
-                        return False
-            return True
-        except Exception as e:
-            print(f"Error: {e}")
-            return True
+
+        if path is not None and excluded_paths is not None:
+            for exclusion_path in map(lambda x: x.strip(), excluded_paths):
+                pattern = ""
+                if exclusion_path[-1] == "*":
+                    pattern = "{}.*".format(exclusion_path[0:-1])
+                elif exclusion_path[-1] == "/":
+                    pattern = "{}/*".format(exclusion_path[0:-1])
+                else:
+                    pattern = "{}/*".format(exclusion_path)
+                if re.match(pattern, path):
+                    return False
+        return True
 
     def authorization_header(self, request=None) -> str:
         """
@@ -48,13 +45,10 @@ class Auth:
         Returns:
         - str: The authorization header value or None if not present.
         """
-        try:
-            if request is not None:
-                return request.headers.get("Authorization", None)
-            return None
-        except Exception as e:
-            print(f"Error: {e}")
-            return None
+
+        if request is not None:
+            return request.headers.get("Authorization", None)
+        return None
 
     def current_user(self, request=None) -> TypeVar("User"):
         """
@@ -66,8 +60,5 @@ class Auth:
         Returns:
         - User: The current user or None.
         """
-        try:
-            return None
-        except Exception as e:
-            print(f"Error: {e}")
-            return None
+
+        return None
