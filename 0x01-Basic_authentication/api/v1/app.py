@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Route module for the API.
+"""
+Route module for the API.
 """
 import os
 from os import getenv
@@ -9,6 +10,7 @@ from flask_cors import CORS, cross_origin
 from api.v1.views import app_views
 from api.v1.auth.auth import Auth
 from api.v1.auth.basic_auth import BasicAuth
+
 
 app = Flask(__name__)
 app.register_blueprint(app_views)
@@ -23,8 +25,7 @@ if auth_type == "basic_auth":
 
 @app.errorhandler(404)
 def not_found(error) -> str:
-    """
-    Handler for 404 Not Found error.
+    """Handler for 404 Not Found error.
 
     Parameters:
     - error: The error object.
@@ -37,8 +38,7 @@ def not_found(error) -> str:
 
 @app.errorhandler(401)
 def unauthorized(error) -> str:
-    """
-    Handler for 401 Unauthorized error.
+    """Handler for 401 Unauthorized error.
 
     Parameters:
     - error: The error object.
@@ -51,8 +51,7 @@ def unauthorized(error) -> str:
 
 @app.errorhandler(403)
 def forbidden(error) -> str:
-    """
-    Handler for 403 Forbidden error.
+    """Handler for 403 Forbidden error.
 
     Parameters:
     - error: The error object.
@@ -82,23 +81,15 @@ def authenticate_user():
             "/api/v1/forbidden/",
         ]
         if auth.require_auth(request.path, excluded_paths):
-            try:
-                auth_header = auth.authorization_header(request)
-                user = auth.current_user(request)
-                if auth_header is None:
-                    abort(401)
-                if user is None:
-                    abort(403)
-            except Exception as e:
-                print(f"Error: {e}")
-                abort(500)
+            auth_header = auth.authorization_header(request)
+            user = auth.current_user(request)
+            if auth_header is None:
+                abort(401)
+            if user is None:
+                abort(403)
 
 
 if __name__ == "__main__":
     host = getenv("API_HOST", "0.0.0.0")
     port = getenv("API_PORT", "5000")
-    try:
-        app.run(host=host, port=port)
-    except Exception as e:
-        print(f"Error: {e}")
-        exit(1)
+    app.run(host=host, port=port)
