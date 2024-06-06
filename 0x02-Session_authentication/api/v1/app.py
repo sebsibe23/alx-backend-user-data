@@ -33,14 +33,28 @@ if auth_type == 'session_db_auth':
 
 @app.errorhandler(404)
 def not_found(error) -> str:
-    """Not found handler.
+    """
+    Handler for 404 Not Found error.
+
+    Parameters:
+    - error: The error object.
+
+    Returns:
+    - JSON response with error message and 404 status code.
     """
     return jsonify({"error": "Not found"}), 404
 
 
 @app.errorhandler(401)
 def unauthorized(error) -> str:
-    """Unauthorized handler.
+    """Unauthorized handler.i
+    Handler for 401 Unauthorized error.
+
+    Parameters:
+    - error: The error object.
+
+    Returns:
+    - JSON response with error message and 401 status code.
     """
     return jsonify({"error": "Unauthorized"}), 401
 
@@ -48,6 +62,13 @@ def unauthorized(error) -> str:
 @app.errorhandler(403)
 def forbidden(error) -> str:
     """Forbidden handler.
+    Handler for 403 Forbidden error.
+
+    Parameters:
+    - error: The error object.
+
+    Returns:
+    - JSON response with error message and 403 status code.
     """
     return jsonify({"error": "Forbidden"}), 403
 
@@ -55,6 +76,14 @@ def forbidden(error) -> str:
 @app.before_request
 def authenticate_user():
     """Authenticates a user before processing a request.
+    Authenticates a user before processing a request.
+
+    Checks if the request path requires authentication and
+    verifies the user's credentials.
+
+    Raises:
+    - 401 Unauthorized: If the authorization header is missing.
+    - 403 Forbidden: If the user is not authenticated.
     """
     if auth:
         excluded_paths = [
