@@ -10,28 +10,42 @@ from .session_exp_auth import SessionExpAuth
 
 
 class SessionDBAuth(SessionExpAuth):
-    """Session authentication class with expiration and storage support.
-    """
+    """Session authentication class with expiration and storage support."""
 
     def create_session(self, user_id=None) -> str:
         """Creates and stores a session id for the user.
+
+        Parameters:
+        user_id (str): The user ID to create a session for.
+
+        Returns:
+        str: The session ID, or None if there was an error.
+
         """
         session_id = super().create_session(user_id)
         if type(session_id) == str:
             kwargs = {
-                'user_id': user_id,
-                'session_id': session_id,
+                "user_id": user_id,
+                "session_id": session_id,
             }
             user_session = UserSession(**kwargs)
             user_session.save()
             return session_id
 
     def user_id_for_session_id(self, session_id=None):
-        """Retrieves the user id of the user associated with
-        a given session id.
+        """
+            Retrieves the user id of the user associated with a given
+        session id.
+
+        Parameters:
+        session_id (str): The session ID to retrieve the user ID for.
+
+        Returns:
+        str: The user ID associated with the session ID, or None if
+        the session has expired.
         """
         try:
-            sessions = UserSession.search({'session_id': session_id})
+            sessions = UserSession.search({"session_id": session_id})
         except Exception:
             return None
         if len(sessions) <= 0:
@@ -45,10 +59,18 @@ class SessionDBAuth(SessionExpAuth):
 
     def destroy_session(self, request=None) -> bool:
         """Destroys an authenticated session.
+
+        Parameters:
+        request (flask.Request): The Flask request object containing
+        the session information.
+
+        Returns:
+        bool: True if the session was successfully destroyed, False
+        otherwise.
         """
         session_id = self.session_cookie(request)
         try:
-            sessions = UserSession.search({'session_id': session_id})
+            sessions = UserSession.search({"session_id": session_id})
         except Exception:
             return False
         if len(sessions) <= 0:
