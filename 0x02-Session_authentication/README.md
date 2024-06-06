@@ -79,3 +79,4 @@ By following these steps, you will gain a thorough understanding of session auth
 This project is a valuable learning experience that emphasizes understanding the underlying mechanics of session authentication. By building the system from scratch, you will develop a strong foundation in web security practices and session management.
 
 sebsibe solomon
+
