@@ -25,7 +25,7 @@ def index() -> str:
     Returns:
         str: The home page's payload.
     """
-    return jsonify({"message": "Welcome"})
+    return jsonify({"message": "Bienvenue"}), 200
 
 
 @app.route("/users", methods=["POST"], strict_slashes=False)
