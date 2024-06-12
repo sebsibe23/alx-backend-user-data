@@ -35,12 +35,13 @@ def users() -> str:
     Returns:
         str: The account creation payload.
     """
-    email, password = request.form.get("email"), request.form.get("password")
+    email = request.form.get('email')
+    password = request.form.get('password')
     try:
         AUTH.register_user(email, password)
-        return jsonify({"email": email, "message": "User created"})
-    except ValueError:
-        return jsonify({"message": "Email already registered"}), 400
+        return jsonify({"email": f"{email}", "message": "user created"}), 200
+    except Exception:
+        return jsonify({"message": "email already registered"}), 400
 
 
 @app.route("/sessions", methods=["POST"], strict_slashes=False)
